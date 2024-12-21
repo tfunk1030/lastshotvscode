@@ -1,0 +1,50 @@
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  input[type="number"],
+  select {
+    font-size: 16px !important; /* Prevent iOS zoom */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent pull-to-refresh */
+  html, body {
+    overscroll-behavior-y: contain;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Improve touch targets */
+  button, 
+  select,
+  input {
+    min-height: 44px;
+  }
+
+  /* Remove tap highlight on iOS */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smooth scrolling */
+  .scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  /* Prevent text selection */
+  .no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .ios-height-fix {
+    height: -webkit-fill-available;
+  }
+}

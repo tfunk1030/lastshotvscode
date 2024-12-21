@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Shot Analysis Test Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Golf Shot Analysis Test Client</h1>
+        
+        <h2>Test Shot Analysis</h2>
+        <button onclick="testShotAnalysis()">Analyze Test Shot</button>
+        <div id="shotResults" class="results"></div>
+
+        <h2>Test Environmental Conditions</h2>
+        <button onclick="testEnvironmentalConditions()">Calculate Environmental Impact</button>
+        <div id="envResults" class="results"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3333/api';
+
+        async function testShotAnalysis() {
+            const testData = {
+                initialConditions: {
+                    velocity: {
+                        x: 150,  // Initial velocity in ft/s
+                        y: 50,
+                        z: 0
+                    },
+                    spinRate: 2500  // RPM
+                },
+                environmentalConditions: {
+                    temperature: 72,
+                    pressure: 29.92,
+                    humidity: 45,
+                    altitude: 0,
+                    windSpeed: 5,
+                    windDirection: 0
+                },
+                clubData: {
+                    type: "DRIVER",
+                    quality: 1,
+                    impact: "center"
+                }
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/analyze-shot`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const data = await response.json();
+                document.getElementById('shotResults').textContent = 
+                    JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('shotResults').textContent = 
+                    `Error: ${error.message}`;
+            }
+        }
+
+        async function testEnvironmentalConditions() {
+            const testConditions = {
+                temperature: 72,
+                pressure: 29.92,
+                humidity: 45,
+                altitude: 850,
+                windSpeed: 10,
+                windDirection: 45
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/environmental-conditions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testConditions)
+                });
+                
+                const data = await response.json();
+                document.getElementById('envResults').textContent = 
+                    JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('envResults').textContent = 
+                    `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
