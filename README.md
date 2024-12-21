@@ -39,16 +39,53 @@ npm run dev
 
 The application will be available at `http://localhost:3000`
 
-## Development
+## Using the UI with Your Own Research Data
 
-### Available Scripts
+This UI is designed to be easily integrated with external research data and calculations. Here's how to use it with your own research:
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run test` - Run tests (if configured)
+### Integration Methods
 
-### Project Structure
+1. **Direct Import Method**
+   - Import your research algorithms as JavaScript modules
+   - Integrate directly into the frontend code
+   - Best for simple calculations and immediate results
+
+2. **API Integration Method**
+   - Set up your research as a backend service
+   - Connect through API endpoints
+   - Example integration in BasicCalculator.tsx:
+   ```typescript
+   const calculateShot = async () => {
+     const response = await fetch('your-api/calculate', {
+       method: 'POST',
+       body: JSON.stringify({
+         temperature: conditions.temperature,
+         humidity: conditions.humidity,
+         altitude: conditions.altitude,
+         club: shot.club,
+         distance: shot.distance
+       })
+     });
+     const data = await response.json();
+     setAdjustments(data.adjustments);
+   };
+   ```
+
+3. **Hybrid Approach**
+   - Combine client-side and server-side calculations
+   - Use local processing for simple operations
+   - Offload complex computations to your backend
+
+### Integration Steps
+
+1. Fork this repository
+2. Choose your integration method
+3. Import your research data/algorithms
+4. Modify calculation functions
+5. Update UI components as needed
+6. Test thoroughly on mobile devices
+
+## Project Structure
 
 ```
 lastshotvscode/
@@ -63,9 +100,15 @@ lastshotvscode/
 └── package.json         # Project configuration
 ```
 
+## Development Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run test` - Run tests (if configured)
+
 ## Mobile Optimization
 
-This application is specifically optimized for mobile devices with:
 - Touch-friendly interface elements
 - Mobile-specific viewport settings
 - iOS and Android compatibility
